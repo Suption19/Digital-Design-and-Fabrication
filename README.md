@@ -136,3 +136,89 @@ PWM control is superior to simple on/off switching because it allows smooth brig
 *   [Digital Design & Fabrication | Exercise 1 Lab Manual]
 
 ---
+
+## 3. Microcontroller Basics: Building an Alarm Clock (Exercise 2)
+
+### Goal
+To build a fully functional digital alarm clock using an Arduino microcontroller, integrating various components step-by-step. The final setup includes an active buzzer, an I2C LCD display, a Real-Time Clock (RTC) module, push buttons for user input, and an ultrasonic distance sensor to track waving gestures for snooze and stop commands.
+
+### Process & Materials
+*   **Materials Used:** Arduino UNO, Breadboard, Active Buzzer, I2C LCD Display (16x2), DS1307 RTC Module, 4 Push Buttons, URM37 Ultrasonic Sensor, Jumper wires, USB cable.
+*   **Process:** 
+
+    1. **Sub-circuit 1: Connecting the Buzzer**
+       * We connected the buzzer to the Arduino to create simple audible alerts. We ran into a Linux permission problem (`sudo chmod 666 /dev/ttyACM0`) initially when trying to interact with the port. 
+       * Without proper resistance or delays, it made a very loud continuous beeping. We initially forgot to connect `VIN` and had a library commented out. We adjusted the source code to assign the buzzer to Pin 12 to test its functionality.
+
+    2. **Sub-circuit 2: Adding the LCD Display**
+       * We integrated an I2C 16x2 LCD display. First, we had to find the correct I2C hardware address for the display by running an I2C scanner sketch, which identified our display at address `0x27`.
+       * Initially, nothing was displayed on the screen; the output only appeared in the IDE's Serial Monitor.
+       * We discovered we needed to install specific libraries to make it function properly, namely `LiquidCrystal_I2C` for the display control and `Adafruit BusIO` for the underlying I2C abstraction. Once the address and libraries were properly set up, we could successfully print text strings to the LCD.
+
+    3. **Sub-circuit 3: Integrating the Real-Time Clock (RTC)**
+       * We added a DS1307 RTC module to maintain accurate time independent of the Arduino's power cycle. Because the RTC also uses I2C communication, it seamlessly shares the SDA and SCL lines with the LCD display via the breadboard. We included the `RTClib.h` library to read and process the time easily.
+       * The module is powered by a coin cell battery. During our first setup, we uploaded the script to sync the module with the computer's real-time. Thanks to the battery backup, when re-powering or uploading subsequent iterations of the program, the current time was saved and accurately maintained automatically.
+
+    4. **Sub-circuit 4: Using Push Buttons**
+       * We integrated push buttons to act as our menu and control inputs. To handle the inputs cleanly and avoid hardware bouncing issues (where a physical press registers as multiple messy digital signals), we utilized the `<Button.h>` library for automatic software debouncing.
+       * As an isolated trial test, we wired a single button and programmed a feedback loop: pressing the button successfully triggered the Arduino's built-in "L" LED (Pin 13) to light up. This confirmed our pin definitions and physical breadboard connections were completely functional before we linked them to the complex alarm menu system.
+
+    5. **Final Project: The Complete Alarm Clock**
+       * We combined everything into one main circuit utilizing the following button mapped logic:
+         * **White Button** (Pin 3): Alarm On/Off Toggle
+         * **Red Button** (Pin 2): Menu Toggle (Switching between Main Clock, Set Time, and Set Melody pages)
+         * **Yellow Button** (Pin 4): Set Hour / Preview Melody / STOP Alarm
+         * **Black Button** (Pin 5): Set Minute / Cycle Melodies / SNOOZE Alarm
+       * **How it works:** The system operates using a state machine driven by menus. By default, it shows the current time provided by the RTC module. Pressing the Red button cycles through setting the alarm time and selecting between different melodies (e.g., Classic, Digital, Arpeggio), which can be previewed directly before saving.
+       * When the target alarm time is reached, the buzzer starts playing the chosen melody. To interact with the ringing alarm conveniently without having to aim for a small push button, we integrated an ultrasonic sensor (Pins 9 and 10) pointing upwards.
+       * We integrated distance logic for touchless control: the sensor measures the distance continuously (normally resting at around ~34 cm facing the ceiling). If a hand waves close to the sensor (dropping the distance reading to 2-5 cm), it triggers a state change to silently stop or snooze the alarm smoothly.
+
+### Code Snippets & Test Scripts
+
+During the development process, isolated test scripts were created to verify individual hardware components before merging them into the complex final alarm clock software:
+
+*   **[Hardware Integration Test](Exercise/exercise_02/button_test.ino):** A simple script we wrote to verify the LCD screen, internal pull-up buttons, and buzzer connectivity simultaneously. It prints real-time button statuses to the LCD and triggers a quick beep when pressed.
+*   **[Ultrasonic Sensor Test](Exercise/exercise_02/ultrasonic_test.ino):** A standalone script created because the waving functionality initially failed due to pulse logic. It triggers the URM37 sensor, outputs distance measurements to the Serial Monitor, and successfully turns on the onboard LED (Pin 13) when an object (e.g., a hand) is within 20 cm.
+
+**Final Alarm Clock Highlights: Distance Logic**
+A section showing state variables and the distance-fetching logic out of the core final script:
+```cpp
+// State Variables
+bool isAlarmSet = false;
+bool isRinging = false;
+bool didItRingToday = false;
+short unsigned int AlarmHH = 12; 
+short unsigned int AlarmMM = 0;  
+int menuPage = 0; 
+int selectedMelody = 0; 
+
+// ... URM37 DISTANCE LOGIC ...
+int getDistance() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  long duration = pulseIn(echoPin, HIGH);
+  return duration * 0.034 / 2;
+}
+```
+
+### Visual Documentation
+
+#### Sub-circuit 1: Connecting the Buzzer
+<img src="images/exercise_02/task2_1_buzzer.jpeg" width="600" alt="Sub-circuit 1 Buzzer">
+
+#### Sub-circuit 2: LCD Integration
+<img src="images/exercise_02/task2_2_lcd.jpeg" width="600" alt="Sub-circuit 2 LCD">
+
+#### Sub-circuit 3: Real Time Clock Setup
+<img src="images/exercise_02/task2_3_rtc.jpeg" width="600" alt="Sub-circuit 3 RTC">
+
+#### Final Assembly Video
+[View video: Final Alarm Clock Project](images/exercise_02/final_alarm_clock.mp4)
+
+### The 'Failure Log'
+*   **What went wrong:** Initially, the device did not connect to the port on Linux, requiring local overrides. We also missed out on `VIN` for our buzzer, and didn't use a resistor which caused intense loud beeping. Lastly, the waving function didn't work at first integration.
+*   **How I managed it:** Systematically debugging components: moving the buzzer pin, installing missing `Adafruit BusIO` library components for the LCD to fire, and adding isolated test scripts (like the ultrasonic distance tester) before merging into the main codebase.
+*   **What I learned:** Breaking down complex hardware setups into independent, testable sub-circuits (inputs, logic, outputs) vastly accelerates the diagnostics process. Utilizing standard modular libraries like `Adafruit BusIO` makes managing protocols like I2C significantly easier once correctly configured.
