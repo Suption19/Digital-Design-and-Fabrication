@@ -296,7 +296,7 @@ The final project was an automated "Smart Sleep Pillow" that inflates and deflat
 **Sensor Characteristics:**
 *   **Resistance:** As light increases, its resistance decreases (ranging from several MΩ in total darkness down to ~1 kΩ in bright light).
 *   **Usage:** They are low cost, easy to use, and perfect for light-activated triggers like automatic night lights or ambient light adjustments.
-*   **Limitations:** Because each CdS cell varies significantly in its exact resistance (up to 50% variance), they aren't suitable for precise lux measurements—only for detecting relative light changes (bright vs. dark).
+*   **Limitations:** Because each CdS cell varies significantly in its exact resistance (up to 50% variance), they aren't suitable for precise lux measurements, only for detecting relative light changes (bright vs. dark).
 
 **System Behavior:**
 *   **Nighttime (Dark):** The system detects the drop in light and inflates the pillow, making it bigger so the person can sleep comfortably.
@@ -306,6 +306,6 @@ The final project was an automated "Smart Sleep Pillow" that inflates and deflat
 [View video: Final Result - Smart Sleep Pillow](images/exercise_03/Final_result_light_sensor.mp4)
 
 ### The 'Failure Log'
-*   **What went wrong:** Initially, we ran into problems with the pneumatic tubing system—we had connected the air valve on incorrectly, blocking the exhaust path. Because of this, it was physically unable to deflate the air out of the pillow, even when the software sent the correct commands. Additionally, finding reliable light thresholds caused early failures ([Failure_Light_Sensor.mp4](images/exercise_03/Failure_Light_Sensor.mp4)).
+*   **What went wrong:** Initially, we ran into problems with the pneumatic tubing system, we had connected the air valve on incorrectly, blocking the exhaust path. Because of this, it was physically unable to deflate the air out of the pillow, even when the software sent the correct commands. Additionally, finding reliable light thresholds caused early failures ([Failure_Light_Sensor.mp4](images/exercise_03/Failure_Light_Sensor.mp4)).
 *   **How I managed it:** We re-routed the silicone tubing so the air pump accurately pulled air through the opened valve path instead of fighting a closed airway. For the light sensor, we added serial monitoring for the `analogRead(LDR_PIN)` values to debug the ambient parameters until we settled on a threshold limit of 400.
 *   **What I learned:** Pneumatic routing requires an understanding of standard valve states (normally-open vs. normally-closed) and pathway directions. Just because the software triggers correctly doesn't mean the physical hardware is capable of executing it. Furthermore, environmentally dependent sensors always require manual real-world threshold calibration rather than relying on guessed fixed numbers.
