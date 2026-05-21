@@ -222,3 +222,90 @@ int getDistance() {
 *   **What went wrong:** Initially, the device did not connect to the port on Linux, requiring local overrides. We also missed out on `VIN` for our buzzer, and didn't use a resistor which caused intense loud beeping. Lastly, the waving function didn't work at first integration.
 *   **How I managed it:** Systematically debugging components: moving the buzzer pin, installing missing `Adafruit BusIO` library components for the LCD to fire, and adding isolated test scripts (like the ultrasonic distance tester) before merging into the main codebase.
 *   **What I learned:** Breaking down complex hardware setups into independent, testable sub-circuits (inputs, logic, outputs) vastly accelerates the diagnostics process. Utilizing standard modular libraries like `Adafruit BusIO` makes managing protocols like I2C significantly easier once correctly configured.
+
+---
+
+## 4. Sensors and Actuators: Smart Sleep Pillow (Exercise 3)
+
+### Goal
+To build a system utilizing sensors and actuators; specifically, an automated Pillow that inflates and deflates. 
+
+### Process & Materials
+*   **Materials Used:** Arduino, Breadboard, MOSFET Modules, 2 DC Air Pumps (ZR370), 1 Air Valve (FA0520E), LDR (Light-Dependent Resistor), Inflatable Pouch/Pillow, Silicone Tubing.
+*   **Process:** 
+
+    1. **Testing MOSFET Modules:** First, we established basic control sequences for our high-power components. We configured Pin 9 to govern two MOSFETs (controlling the first pump and the air valve simultaneously) and Pin 8 to control the single MOSFET hooked up to the secondary side-connected air pump. We alternated testing their on and off states.
+    
+    2. **Pneumatic Cycle Configuration:** Once basic control was established, we developed an independent 3-pin pneumatic cycle. This involved separating the control of the inflate pump (Pin 9), the valve (Pin 10), and the deflate pump (Pin 8). We programmed continuous cycles representing four distinct phases:
+       * **Inflate Phase:** Connecting the inflate pump to the pillow while the valve is deactivated to let air flow in.
+       * **Hold Phase:** Keeping the valve activated to trap the air inside.
+       * **Deflate Phase:** Opening the exhaust path by keeping the valve activated while running the deflate pump.
+       * **Rest Phase:** Powering everything down briefly.
+       
+    3. **Final Smart Sleep Pillow:** We integrated an analog LDR light sensor on Pin A0 to automate this mechanism based on room darkness. We monitored real-time light thresholds using the serial monitor to calibrate the system. We established `400` as our `DARKNESS_THRESHOLD`. 
+       * **"Good Night" mode:** When the light drops below 400, the pillow triggers the valve and inflate pump to fill the pillow so the user can sleep comfortably.
+       * **"Good Morning" mode:** When ambient light returns to 400 or above, the system triggers the opening of the valve and activates the deflate pump to wake the user up by deflating the pillow.
+
+### Code Snippets & Logic Highlights
+
+The logic centers around an `isInflated` boolean tracking state to prevent the system from constantly triggering the pumps on every loop iteration as long as it's dark or bright.
+
+**Final Light-Activated Logic:**
+```cpp
+  // 1. Read Light Level
+  int lightLevel = analogRead(LDR_PIN);
+  
+  // 2. Logic: It gets dark -> Inflate the pillow
+  if (lightLevel < DARKNESS_THRESHOLD && isInflated == false) {
+    digitalWrite(VALVE_PIN, HIGH);
+    digitalWrite(INFLATE_PUMP_PIN, HIGH);
+    delay(INFLATE_TIME);
+    
+    digitalWrite(INFLATE_PUMP_PIN, LOW);
+    isInflated = true; 
+  }
+  
+  // 3. Logic: It gets bright -> Deflate the pillow
+  else if (lightLevel >= DARKNESS_THRESHOLD && isInflated == true) {
+    digitalWrite(VALVE_PIN, HIGH);
+    digitalWrite(DEFLATE_PUMP_PIN, HIGH);
+    delay(DEFLATE_TIME);
+    digitalWrite(VALVE_PIN, LOW);
+    
+    digitalWrite(DEFLATE_PUMP_PIN, LOW);
+    isInflated = false;
+  }
+```
+
+### Visual Documentation
+
+#### Initial Hardware Setup
+<img src="images/exercise_03/Inital_Build.jpeg" width="600" alt="Initial Build Setup for the Smart Sleep Pillow">
+
+#### Prototype Testing & Light Trigger Logic
+[View video: Testing MOSFETs with Light Trigger](images/exercise_03/Test_Mos_Light.mp4)
+
+#### Pneumatic Component Cycle Test
+[View video: Inflate and Deflate Cycle (4 Seconds)](images/exercise_03/Inflate_Deflate_4_Sek.mp4)
+
+#### Light Sensor Calibration & Debugging
+[View video: Debugging Light Values Output](images/exercise_03/Debug_Light_Values.mp4)
+
+The final project was an automated "Smart Sleep Pillow" that inflates and deflates depending on ambient light levels. To measure the light, we utilized a **Photo cell (CdS photoresistor)** placed in a voltage divider with a fixed resistor, allowing us to read values using `analogRead()`. 
+
+**Sensor Characteristics:**
+*   **Resistance:** As light increases, its resistance decreases (ranging from several MΩ in total darkness down to ~1 kΩ in bright light).
+*   **Usage:** They are low cost, easy to use, and perfect for light-activated triggers like automatic night lights or ambient light adjustments.
+*   **Limitations:** Because each CdS cell varies significantly in its exact resistance (up to 50% variance), they aren't suitable for precise lux measurements—only for detecting relative light changes (bright vs. dark).
+
+**System Behavior:**
+*   **Nighttime (Dark):** The system detects the drop in light and inflates the pillow, making it bigger so the person can sleep comfortably.
+*   **Morning (Bright):** When the sun rises, the sensor detects the increased light and deflates the pillow, making it smaller to naturally encourage the person to wake up and stand up.
+
+#### Final Assembly Execution
+[View video: Final Result - Smart Sleep Pillow](images/exercise_03/Final_result_light_sensor.mp4)
+
+### The 'Failure Log'
+*   **What went wrong:** Initially, we ran into problems with the pneumatic tubing system—we had connected the air valve on incorrectly, blocking the exhaust path. Because of this, it was physically unable to deflate the air out of the pillow, even when the software sent the correct commands. Additionally, finding reliable light thresholds caused early failures ([Failure_Light_Sensor.mp4](images/exercise_03/Failure_Light_Sensor.mp4)).
+*   **How I managed it:** We re-routed the silicone tubing so the air pump accurately pulled air through the opened valve path instead of fighting a closed airway. For the light sensor, we added serial monitoring for the `analogRead(LDR_PIN)` values to debug the ambient parameters until we settled on a threshold limit of 400.
+*   **What I learned:** Pneumatic routing requires an understanding of standard valve states (normally-open vs. normally-closed) and pathway directions. Just because the software triggers correctly doesn't mean the physical hardware is capable of executing it. Furthermore, environmentally dependent sensors always require manual real-world threshold calibration rather than relying on guessed fixed numbers.

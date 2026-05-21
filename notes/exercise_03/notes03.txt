@@ -1,0 +1,177 @@
+
+Test Script for lighten up the mos modules:
+// Define the digital pins connected to the MOSFET modules
+// Pin 9 controls TWO MOSFETs (Air Pump ZR370 + Air Valve FA0520E)
+const int SYSTEM_1_PIN = 9; 
+
+// Pin 8 controls ONE MOSFET (Second Air Pump)
+const int SYSTEM_2_PIN = 8; 
+
+// Define timing intervals (in milliseconds)
+const int ON_DURATION = 2000;  // 2 seconds on
+const int OFF_DURATION = 1000; // 1 second off between tests
+
+void setup() {
+  // Initialize serial communication for monitoring
+  Serial.begin(9600);
+  Serial.println("Starting dual-pin MOSFET sequence test...");
+
+  // Set the control pins as outputs
+  pinMode(SYSTEM_1_PIN, OUTPUT);
+  pinMode(SYSTEM_2_PIN, OUTPUT);
+
+  // Ensure all actuators are turned off on startup
+  digitalWrite(SYSTEM_1_PIN, LOW);
+  digitalWrite(SYSTEM_2_PIN, LOW);
+}
+
+void loop() {
+  // --- 1. Test System 1 (Pin 9 - Two MOSFETs) ---
+  Serial.println("Pin 9 ON (Pump + Valve)");
+  digitalWrite(SYSTEM_1_PIN, HIGH);
+  delay(ON_DURATION);
+  
+  Serial.println("Pin 9 OFF");
+  digitalWrite(SYSTEM_1_PIN, LOW);
+  delay(OFF_DURATION);
+
+  // --- 2. Test System 2 (Pin 8 - Single MOSFET) ---
+  Serial.println("Pin 8 ON (Side-connected Pump)");
+  digitalWrite(SYSTEM_2_PIN, HIGH);
+  delay(ON_DURATION);
+  
+  Serial.println("Pin 8 OFF");
+  digitalWrite(SYSTEM_2_PIN, LOW);
+  delay(OFF_DURATION);
+}
+
+
+Code for inflate and deflate:
+// Pin Definitions
+const int INFLATE_PUMP_PIN = 9; // Controls Pump 1 (pushes air in)
+const int VALVE_PIN = 10;       // Controls FA0520EA Valve (routes the air)
+const int DEFLATE_PUMP_PIN = 8; // Controls Pump 2 (pulls air out)
+
+// Timings (in milliseconds)
+const int INFLATE_TIME = 4000;  // 1.5 seconds inflating
+const int HOLD_TIME = 2000;     // 2 seconds holding the air
+const int DEFLATE_TIME = 4000;  // 8 seconds deflating
+const int REST_TIME = 2000;     // 2 seconds resting
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Starting independent 3-pin pneumatic cycle...");
+
+  pinMode(INFLATE_PUMP_PIN, OUTPUT);
+  pinMode(VALVE_PIN, OUTPUT);
+  pinMode(DEFLATE_PUMP_PIN, OUTPUT);
+
+  // Start with everything off
+  digitalWrite(INFLATE_PUMP_PIN, LOW);
+  digitalWrite(VALVE_PIN, LOW);
+  digitalWrite(DEFLATE_PUMP_PIN, LOW);
+}
+
+void loop() {
+  // --- 1. INFLATE PHASE ---
+  Serial.println("INFLATING...");
+  digitalWrite(VALVE_PIN, LOW);        // Activate valve to connect Inflate Pump to Pillow
+  digitalWrite(INFLATE_PUMP_PIN, HIGH); // Turn on Inflate Pump
+  delay(INFLATE_TIME);
+  
+  // --- 2. HOLD PHASE ---
+  Serial.println("HOLDING...");
+  digitalWrite(INFLATE_PUMP_PIN, LOW);  // Turn Inflate Pump off
+  digitalWrite(VALVE_PIN, HIGH);        // KEEP valve HIGH to trap the air inside
+  delay(HOLD_TIME);
+
+  // --- 3. DEFLATE PHASE ---
+  Serial.println("DEFLATING...");
+  // Turn valve LOW to open the exhaust path from Pillow to Deflate Pump
+  digitalWrite(VALVE_PIN, HIGH);         
+  digitalWrite(DEFLATE_PUMP_PIN, HIGH); // Turn on Deflate Pump
+  delay(DEFLATE_TIME);
+
+  // --- 4. REST PHASE ---
+  Serial.println("RESTING...");
+  digitalWrite(DEFLATE_PUMP_PIN, LOW);  // Turn off Deflate Pump
+  digitalWrite(VALVE_PIN, LOW);         // Keep valve relaxed
+  delay(REST_TIME);
+}
+
+- We had problems with the air valve and conntected it wrong, so it didnt deflate the air out of the pillow
+
+
+Final code:
+// Pin Definitionen
+const int INFLATE_PUMP_PIN = 9; // Pumpe 1 (Luft rein)
+const int VALVE_PIN = 10;       // Ventil (Luft halten/freigeben)
+const int DEFLATE_PUMP_PIN = 8; // Pumpe 2 (Luft raus)
+const int LDR_PIN = A0;         // Analoger Pin für den Lichtsensor
+
+// Timings (in Millisekunden)
+const int INFLATE_TIME = 6000;  // 1,5 Sekunden aufblasen
+const int DEFLATE_TIME = 6000;  // 8 Sekunden entleeren
+
+// Schwellenwert für das Licht (MUSS ANGEPASST WERDEN!)
+// Werte unterhalb dieses Limits gelten als "Dunkel" (Schlafenszeit)
+// Werte oberhalb gelten als "Hell" (Aufwachzeit)
+const int DARKNESS_THRESHOLD = 400; 
+
+// Speichert den aktuellen Zustand des Kissens
+bool isInflated = false;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Smart Sleep Kissen gestartet...");
+
+  // Output Pins einrichten
+  pinMode(INFLATE_PUMP_PIN, OUTPUT);
+  pinMode(VALVE_PIN, OUTPUT);
+  pinMode(DEFLATE_PUMP_PIN, OUTPUT);
+
+  // Alles zu Beginn ausschalten
+  digitalWrite(INFLATE_PUMP_PIN, LOW);
+  digitalWrite(VALVE_PIN, LOW);
+  digitalWrite(DEFLATE_PUMP_PIN, LOW);
+}
+
+void loop() {
+  // 1. Lichtwert auslesen
+  int lightLevel = analogRead(LDR_PIN);
+  
+  // Wert im Seriellen Monitor anzeigen (wichtig für die Kalibrierung!)
+  Serial.print("Aktuelles Lichtlevel: ");
+  Serial.println(lightLevel);
+
+  // 2. Logik: Dunkel werden -> Kissen aufblasen
+  if (lightLevel < DARKNESS_THRESHOLD && isInflated == false) {
+    Serial.println("Gute Nacht! Es ist dunkel. Kissen wird aufgeblasen...");
+    
+    digitalWrite(VALVE_PIN, HIGH);        // Ventil aktivieren
+    digitalWrite(INFLATE_PUMP_PIN, HIGH); // Aufblasen starten
+    delay(INFLATE_TIME);
+    
+    digitalWrite(INFLATE_PUMP_PIN, LOW);  // Pumpe aus
+    // Ventil bleibt HIGH, um die Luft zu halten!
+    
+    isInflated = true; // Zustand merken
+  }
+  
+  // 3. Logik: Hell werden -> Kissen entleeren
+  else if (lightLevel >= DARKNESS_THRESHOLD && isInflated == true) {
+    Serial.println("Guten Morgen! Es ist hell. Kissen wird entleert...");
+    
+    digitalWrite(VALVE_PIN, HIGH);         // Ventil öffnen für den Auslass
+    digitalWrite(DEFLATE_PUMP_PIN, HIGH); // Absaugen starten
+    delay(DEFLATE_TIME);
+    digitalWrite(VALVE_PIN, LOW);
+    
+    digitalWrite(DEFLATE_PUMP_PIN, LOW);  // Pumpe aus
+    
+    isInflated = false; // Zustand merken
+  }
+
+  // Kurze Pause, damit der Serielle Monitor nicht überschwemmt wird
+  delay(500); 
+}
