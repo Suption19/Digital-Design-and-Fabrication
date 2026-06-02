@@ -1,0 +1,47 @@
+Exercise 04 - E-Textiles (LED Patches)
+
+Goal:
+- Create an e-textile patch that can be attached to clothing
+- Gain experience with functional materials and soft circuits
+- Learn to deal with unexpected setbacks
+
+Task:
+1. Design an e-textile patch pattern (I chose a rocket)
+2. Connect min. 5 LEDs
+3. Use conductive thread
+4. Decide on a suitable circuit (series vs parallel)
+5. Sew by hand
+
+Materials used:
+- Sewable 3V coin battery holder
+- 5 Sewable LEDs
+- Sewing Needle
+- Conductive Thread (yarn)
+- Fabric (dark grey base + blue star pattern cover)
+- Scissors
+- Multimeter (for measuring resistance of yarn)
+- Paper template
+- Nail polish (mentioned in manual, not used)
+
+Observations / Measurements:
+- Multimeter measurement of one piece of conductive yarn: 9.4 Ω
+- Multimeter measurement of another piece of yarn: 20.3 Ω
+- The conductive thread has notable resistance, but is still usable for low-power LEDs
+- Series circuit: not all LEDs light up because the cumulative voltage drop
+  and yarn resistance is too high for the 3V coin cell
+- Parallel circuit: resistance is divided, voltage is roughly constant
+  -> ALL LEDs light up
+
+First Attempt (failed):
+- The sewing went poorly because I had never sewn before
+- The thread routing was messy
+- In the end there was a short circuit, so the LEDs did not light up
+- The cover fabric was also hard to attach
+
+Second Attempt (successful):
+- Re-cut the rocket with cleaner edges
+- Decided on a parallel circuit so all LEDs would light up
+- Sewed the battery holder first, then added the LEDs one by one
+- Tested the conductive thread on the multimeter before sewing
+- Used the dark fabric as the base and the blue star fabric as a cover
+- All 5 LEDs light up at the end!
