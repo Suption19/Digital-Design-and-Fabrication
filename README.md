@@ -404,3 +404,57 @@ To design and hand-sew an e-textile patch (in the shape of a rocket) that can be
 
 ### Reflection
 E-textiles sit at the intersection of electrical engineering and textile craft. Coming from the hardware-heavy previous exercises, this one was a useful reminder that a soft circuit introduces real constraints: a 3V coin cell cannot drive long chains of LEDs through resistive thread, and "loose" or "messy" stitching is not just an aesthetic problem — it is an electrical problem, because stray threads can short-circuit the battery. Switching to a parallel topology and re-measuring the thread resistance on the multimeter turned out to be the two key insights that made the second attempt work. The final rocket patch is fully self-contained (no microcontroller, no wiring harness), and with a CR2032 inside the battery holder it lights up five LEDs at the same time, which can be attached to a jacket or a backpack with velcro — exactly the kind of wearable the exercise asked for.
+
+---
+
+## 6. CNC Milling: Tea Light Candle Holder (Exercise 5)
+
+### Goal
+To design a custom tea light candle holder in Inkscape and mill it out of wood using a CNC machine. The task was to draw an outer shape (I chose a mushroom) and place a precise 39.5 mm circle in the center to hold the candle.
+
+### Process & Materials
+*   **Materials Used:** Inkscape, CNC milling machine, wood, tea light candle, computer with CNC control software.
+*   **Process:**
+
+    1. **Inkscape Setup**
+       Set document size to 100 × 150 mm with millimeters as units (Shift+Ctrl+D). Changed bounding box mode to "Geometric" under Edit → Preferences → Tools.
+
+    2. **Drawing the Mushroom**
+       Imported a mushroom sketch as a reference image and put it on the bottom layer (Shift+Ctrl+L). Traced over it with the Pencil tool (Smoothing set to 45 to get cleaner curves). Then refined the shape with the Node tool (N), adjusting Bézier handles until the outline looked right.
+
+    3. **Styling for CNC**
+       In Fill and Stroke (Shift+Ctrl+F): set Fill to "No paint", Stroke to a flat colour with a visible width so the paths are recognized as toolpaths.
+
+    4. **Adding the Candle Pocket**
+       Drew a circle with the Ellipse tool + Control key, set it to exactly 39.5 × 39.5 mm, and centered it on the mushroom with Align and Distribute.
+
+### Visual Documentation
+
+#### Reference Sketch
+<img src="images/exercise_05/Original_image_that_I_orientate_myself_on.png" width="600" alt="Reference mushroom sketch">
+
+#### First Idea
+<img src="images/exercise_05/Finished_mushroom.png" width="600" alt="First mushroom attempt">
+
+<img src="images/exercise_05/Finished_mushroom_with_circle_in_it.png" width="600" alt="First attempt with candle pocket">
+
+#### Final Design in Inkscape
+<img src="images/exercise_05/Better_Design.png" width="600" alt="Final mushroom design in Inkscape with 39.5mm candle pocket">
+
+#### CNC Machine
+<img src="images/exercise_05/Image of CNC Machine.jpeg" width="600" alt="CNC milling machine">
+
+#### Milling Videos
+[View video: CNC Program Simulation](images/exercise_05/CNC%20program%20simulation.mp4)
+
+[View video: Milling the Outer Circle](images/exercise_05/Milling%20the%20outer%20circle.mp4)
+
+[View video: Active Milling](images/exercise_05/Active%20Milling.mp4)
+
+### The 'Failure Log'
+*   **What went wrong:** Freehand tracing gave me jagged curves that would look rough when milled.
+*   **How I managed it:** Bumped the Pencil tool's Smoothing to 45 and used the Node tool to clean up the worst spots by hand.
+*   **What I learned:** When designing for CNC, smooth vectors matter — messy paths get carved into messy wood. Also, set your units to mm and bounding box to "Geometric" from the start, otherwise things won't transfer to the CNC software correctly.
+
+### Reflection
+This was the first exercise where the end result is a physical object made by a machine, not just a circuit or code. The workflow is straightforward — sketch in Inkscape, export, mill — but every step needs to be precise. A 0.5 mm error in the circle size means the tea light won't fit. The mushroom shape was fun to design and good practice for learning Bézier curves and node editing.
