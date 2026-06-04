@@ -450,11 +450,3 @@ To design a custom tea light candle holder in Inkscape and mill it out of wood u
 [View video: Milling the Outer Circle](images/exercise_05/Milling%20the%20outer%20circle.mp4)
 
 [View video: Active Milling](images/exercise_05/Active%20Milling.mp4)
-
-### The 'Failure Log'
-*   **What went wrong:** Freehand tracing gave me jagged curves that would look rough when milled.
-*   **How I managed it:** Bumped the Pencil tool's Smoothing to 45 and used the Node tool to clean up the worst spots by hand.
-*   **What I learned:** When designing for CNC, smooth vectors matter — messy paths get carved into messy wood. Also, set your units to mm and bounding box to "Geometric" from the start, otherwise things won't transfer to the CNC software correctly.
-
-### Reflection
-This was the first exercise where the end result is a physical object made by a machine, not just a circuit or code. The workflow is straightforward — sketch in Inkscape, export, mill — but every step needs to be precise. A 0.5 mm error in the circle size means the tea light won't fit. The mushroom shape was fun to design and good practice for learning Bézier curves and node editing.
