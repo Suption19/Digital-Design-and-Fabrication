@@ -322,7 +322,7 @@ To design and hand-sew an e-textile patch (in the shape of a rocket) that can be
 *   **Process:**
 
     1. **Designing the Pattern**
-       I started by sketching a simple rocket silhouette on paper to use as my template. The rocket has a pointed top, two side fins and a narrow exhaust bottom — large enough to comfortably fit the battery holder at the base and to spread out 5 LEDs along the body.
+       I started by sketching a simple rocket silhouette on paper to use as my template. The rocket has a pointed top, two side fins and a narrow exhaust bottom, large enough to comfortably fit the battery holder at the base and to spread out 5 LEDs along the body.
 
     2. **Cutting the Fabric and Laying Out Components**
        I traced the rocket onto a dark grey base fabric and a blue star-patterned cover fabric and cut both pieces out with scissors. I positioned the sewable coin battery holder at the base of the rocket and 5 sewable LEDs along the body. The components have large through-hole sew tabs (marked `+` and `−`) that are designed to be stitched down with conductive thread directly onto the fabric.
@@ -335,9 +335,9 @@ To design and hand-sew an e-textile patch (in the shape of a rocket) that can be
        | Short piece (spool 1) | 9.4 Ω |
        | Longer piece (spool 2) | 20.3 Ω |
        
-       *Observation:* Conductive thread is not a perfect conductor — every additional centimeter adds resistance to the circuit. This is an important constraint when designing a soft circuit: long traces will noticeably dim LEDs, especially when the power source is a weak 3V coin cell.
+       *Observation:* Conductive thread is not a perfect conductor. Every additional centimeter adds resistance to the circuit. This is an important constraint when designing a soft circuit: long traces will noticeably dim LEDs, especially when the power source is a weak 3V coin cell.
 
-    4. **Choosing the Circuit Topology — Parallel vs. Series**
+    4. **Choosing the Circuit Topology: Parallel vs. Series**
        The exercise manual explained the trade-off clearly: in a **series circuit** the yarn resistance is cumulative and the supply voltage gets divided across every LED, so not all LEDs will light up. In a **parallel circuit** the resistance is divided across the branches and the voltage across each LED is roughly constant, so all of them light up. Because the coin cell only provides 3V, a series chain of 5 LEDs would be too dim to read. I therefore chose a **parallel circuit** in which every LED is connected directly across the `+` and `−` rails of the battery holder with its own short piece of conductive thread.
 
     5. **First Attempt (Miserable)**
@@ -358,25 +358,25 @@ To design and hand-sew an e-textile patch (in the shape of a rocket) that can be
 <img src="images/exercise_04/Measure Yarn.jpeg" width="400" alt="Multimeter showing 9.4 Ω across a piece of conductive yarn">
 <img src="images/exercise_04/Measure another Yarn.jpeg" width="400" alt="Multimeter showing 20.3 Ω across another piece of conductive yarn">
 
-#### First Attempt — Pieces and Finished Rocket (Short-Circuited)
+#### First Attempt: Pieces and Finished Rocket (Short-Circuited)
 <img src="images/exercise_04/First attempt.jpeg" width="600" alt="First attempt: rocket fabric pieces with battery holder laid out before sewing">
 <img src="images/exercise_04/First attempt that was finished.jpeg" width="400" alt="First attempt rocket with battery holder and 4 LEDs sewn on, but with a short circuit">
 
-#### Second Attempt — Step by Step
+#### Second Attempt: Step by Step
 <img src="images/exercise_04/Second Attempt (1) battery holder placed.jpeg" width="400" alt="Second attempt step 1: battery holder sewn onto the base fabric">
 <img src="images/exercise_04/Second Attempt (2) first LED sewn.jpeg" width="400" alt="Second attempt step 2: first LED sewn on">
 <img src="images/exercise_04/Second Attempt (3) two LEDs added.jpeg" width="400" alt="Second attempt step 3: second LED added">
 <img src="images/exercise_04/Second Attempt (4) all LEDs placed minus yarn.jpeg" width="400" alt="Second attempt step 4: all 4 LEDs placed, no conductive thread yet">
 <img src="images/exercise_04/Second Attempt (5) now plus yarn connections.jpeg" width="400" alt="Second attempt step 5: conductive yarn stitched to connect all LEDs in parallel">
 
-#### Second Attempt — First Successful Test
+#### Second Attempt: First Successful Test
 <img src="images/exercise_04/Second Attempt (6) testing partial connection.jpeg" width="400" alt="Second attempt step 6: first LED test with a finger on the battery">
 <img src="images/exercise_04/Second Attempt (7) everything lights up.jpeg" width="500" alt="Second attempt step 7: all LEDs light up on the base fabric">
 
-#### Second Attempt — Lighting Demo Video
+#### Second Attempt: Lighting Demo Video
 [View video: All LEDs Lighting Up](images/exercise_04/Second Attempt (7.1) all lights test video.mp4)
 
-#### Second Attempt — Adding the Cover Fabric and Final Patch
+#### Second Attempt: Adding the Cover Fabric and Final Patch
 <img src="images/exercise_04/Second Attempt (8) cover fabric added.jpeg" width="400" alt="Second attempt step 8: blue star cover fabric added on top">
 <img src="images/exercise_04/Second Attempt (9) both pieces sewn together.jpeg" width="500" alt="Second attempt step 9: both fabric pieces stitched together with visible yarn edges">
 <img src="images/exercise_04/Second Attempt (10) finished project.jpeg" width="500" alt="Final finished rocket LED patch attached to a piece of clothing">
@@ -398,12 +398,12 @@ To design and hand-sew an e-textile patch (in the shape of a rocket) that can be
 *   The pads are intentionally oversized so that a needle and conductive thread can pass through them and into the fabric, locking the LED in place mechanically and electrically at the same time.
 
 ### The 'Failure Log'
-*   **What went wrong (first attempt):** Since I had never sewn before, my stitches were loose and the thread routing crossed over the `+` and `−` pads in a couple of places. When I attached the coin cell at the end, the patch short-circuited — the LEDs would not light up because the battery was effectively shorted through the stray threads.
-*   **How I managed it:** I scrapped the first patch and started over for the second attempt. This time I planned the thread paths on paper first, kept the traces short and tidy, paid close attention to the `+` and `−` markings on each LED, and re-measured the resistance of the conductive thread on the multimeter so I knew roughly what to expect.
-*   **What I learned:** A soft circuit is only as good as its weakest (and longest) thread. The exercise manual warned us to "look out for short circuits" and to "make tidy connections" — this is doubly important with conductive thread, where a stray loop or a loose end can easily bridge two pads and short the battery. Plan the layout on paper, sew the battery holder first, add the LEDs one by one, and test the circuit after every addition. Also, *do not* lick the thread to get it through the needle — use a needle threader (as the manual also reminds us).
+*   **What went wrong (first attempt):** Never sewn before, so stitches were loose and thread crossed over the `+` and `−` pads. The patch short-circuited and the LEDs wouldn't light up.
+*   **How I managed it:** Scrapped it and started over. This time I planned the thread paths on paper first, kept traces short, and re-measured the conductive thread resistance on the multimeter before sewing.
+*   **What I learned:** Loose stitching isn't just ugly, it's an electrical problem. Stray threads short-circuit the battery. Plan on paper, sew the battery holder first, add LEDs one by one, and test after every addition. Use a needle threader, don't lick the thread.
 
 ### Reflection
-E-textiles sit at the intersection of electrical engineering and textile craft. Coming from the hardware-heavy previous exercises, this one was a useful reminder that a soft circuit introduces real constraints: a 3V coin cell cannot drive long chains of LEDs through resistive thread, and "loose" or "messy" stitching is not just an aesthetic problem — it is an electrical problem, because stray threads can short-circuit the battery. Switching to a parallel topology and re-measuring the thread resistance on the multimeter turned out to be the two key insights that made the second attempt work. The final rocket patch is fully self-contained (no microcontroller, no wiring harness), and with a CR2032 inside the battery holder it lights up five LEDs at the same time, which can be attached to a jacket or a backpack with velcro — exactly the kind of wearable the exercise asked for.
+This was a good reminder that soft circuits have real constraints. A 3V coin cell can't drive long chains of LEDs through resistive thread, and messy stitching creates shorts. Switching to a parallel topology and measuring thread resistance were the two things that made the second attempt work. The final rocket patch lights up 5 LEDs on a CR2032 and can be attached to a jacket or backpack with velcro.
 
 ---
 
