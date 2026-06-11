@@ -450,3 +450,60 @@ To design a custom tea light candle holder in Inkscape and mill it out of wood u
 [View video: Milling the Outer Circle](images/exercise_05/Milling%20the%20outer%20circle.mp4)
 
 [View video: Active Milling](images/exercise_05/Active%20Milling.mp4)
+
+---
+
+## 7. Laser Cut Business Cards (Exercise 6)
+
+### Goal
+To design a personal business card in Inkscape that can be produced with a laser cutter, combining vector and raster engraving on a wooden material, and then cut out one physical card on the laser cutter in the lab.
+
+### Process & Materials
+*   **Materials Used:** Inkscape, Laser cutter, ~3.2 mm plywood sheet.
+*   **Process:**
+
+    1. **Design in Inkscape**
+       I designed the card as a simple rectangle close to the standard 89 × 51 mm business card size, with a 1 mm margin from the top and left edges of the page. The card has two visual elements that exercise both modes of the laser:
+       * **Raster mode:** a stylised line-art portrait of myself, which I exported as a raster image and embedded into the design.
+       * **Vector mode:** the text `Maik Bernert` (name) and `M. Sc. Computer Science` (title), plus a thin horizontal divider line, all drawn as vector paths so the laser treats them as cut/engrave outlines.
+
+    2. **Material Preparation**
+       I selected a sheet of plywood from the lab's material. Before cutting, we measured the actual thickness of the sheet with a digital caliper: **3.23 mm**. Knowing the exact thickness is important because the vector (cut) power and speed settings need to be tuned so the laser cuts all the way through ~3 mm of wood without excessive charring.
+
+    3. **Laser Settings**
+       I used the Epilog printer driver / Job Control's **Advanced → Color Mapping** dialog to set separate parameters for the two modes:
+       
+       | Mode | Speed | Power | Frequency | Notes |
+       |---|---|---|---|---|
+       | Raster (engrave image + light text) | 70 % | 100 % | 50 | Engraves the portrait and the text into the wood surface |
+       | Vector (cut outline + text) | 7 % | 100 % | 20 | Cuts fully through the ~3.2 mm plywood |
+       
+       Engrave direction was set to **Top-Down** and image dithering to **Standard** so the raster portrait gets a smooth tonal gradient. "Power Comp." was enabled for the vector pass to keep a consistent cut across the working area.
+
+    4. **Cutting**
+       With the ventilation on and the lid closed, we sent the job to the laser cutter. The raster pass engraved the portrait and the text into the wood, and the vector pass then cut the outer outline of the card and the fine details of the text.
+
+    5. **Finishing**
+       After the cut finished, I removed the card from the bed, lightly sanded the edges to remove the small charred fibres left by the laser. The final card has a clean engraved portrait, a clearly legible engraved name and title, and a rectangular outline with lightly darkened edges from the kerf of the laser.
+
+### Visual Documentation
+
+#### Measuring the Plywood Thickness
+<img src="images/exercise_06/Measuring_Wood_Thickness.jpeg" width="600" alt="Digital caliper measuring the plywood at 3.23 mm">
+
+#### Laser Cutter Settings (Raster vs. Vector)
+<img src="images/exercise_06/Laser_Cutting_Settings.jpeg" width="600" alt="Advanced Color Mapping dialog showing raster (Speed 70%, Power 100%, Freq 50) and vector (Speed 7%, Power 100%, Freq 20) settings">
+
+#### Laser Cutting in Action
+[View video: Laser Cutting Process](images/exercise_06/Video_Lasercutting.mp4)
+
+#### Final Business Card
+<img src="images/exercise_06/Final_result_of_laser_cut.jpeg" width="600" alt="Final laser cut wooden business card held up, showing the engraved portrait and the name Maik Bernert with title M. Sc. Computer Science">
+
+### The 'Failure Log'
+*   **What went wrong:** This run was actually my first attempt, so there was no earlier "failed" card on file, but the process had two real learning moments. First, my first draft of the Inkscape file placed the card against the very top-left corner (0,0) of the page, which the lab supervisor pointed out would risk the laser hitting the bed frame at `(1,1)`. I corrected this by adding the required 1 mm margin from the top and left edges before sending the job. Second, I initially selected a vector speed of 20 % for the cut, which at 100 % power only scored the surface but did not cut through the 3.2 mm plywood. Lowering the vector speed to 7 % finally cut cleanly through the material in a single pass.
+*   **What I learned:** Always measure the material thickness before cutting. Vector speed and power interact heavily with material thickness, what works for 1.5 mm MDF will not cut 3.2 mm plywood. And the page origin in Inkscape is a real coordinate, not a safety zone; respect the 1 mm margin.
+
+### References
+*   [Digital Design & Fabrication | Exercise 6 Lab Manual]
+*   [Inspiration: HCIE Laser Cut Business Cards](https://hcie.csail.mit.edu/classes/2021-fall6810/laser-cut-business-card.html)
