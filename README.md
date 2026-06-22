@@ -507,3 +507,18 @@ To design a personal business card in Inkscape that can be produced with a laser
 ### References
 *   [Digital Design & Fabrication | Exercise 6 Lab Manual]
 *   [Inspiration: HCIE Laser Cut Business Cards](https://hcie.csail.mit.edu/classes/2021-fall6810/laser-cut-business-card.html)
+
+---
+
+## 8. Introduction to CAD with Onshape (Exercise 7)
+
+### Goal
+To complete the "Introduction to CAD" learning path in Onshape, a free, cloud-based parametric CAD platform. Because the in-person class on 18 June 2026 was cancelled, the instructor (Juliusz Wojtyga) assigned the three self-paced Onshape training modules as a replacement. The deliverable is a screenshot of the training dashboard showing all three required courses as completed.
+
+*   **Process:**
+       After finishing all three modules, I navigated to the **My Training Dashboard** in Onshape, switched to the **Completed** tab, and took a screenshot showing all three required courses listed as completed. The dashboard summary also shows `3 / 3` in the "Completed" tile, which confirms successful completion of the learning path.
+
+### Visual Documentation
+
+#### Onshape Training Dashboard - All 3 Courses Completed
+<img src="images/exercise_07/Screenshot 2026-06-23 202955.png" width="700" alt="Onshape My Training Dashboard showing the three required courses (Introduction to Parametric Feature-Based CAD, Introduction to Sketching, Introduction to Part Studios) under the Completed tab, with 3 out of 3 marked as completed">
