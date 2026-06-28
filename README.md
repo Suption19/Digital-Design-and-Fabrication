@@ -451,6 +451,9 @@ To design a custom tea light candle holder in Inkscape and mill it out of wood u
 
 [View video: Active Milling](images/exercise_05/Active%20Milling.mp4)
 
+#### Final Milled Result
+<img src="images/exercise_05/Final_result.jpeg" width="600" alt="Final milled mushroom tea light holder with a tea light candle placed in the pocket">
+
 ---
 
 ## 7. Laser Cut Business Cards (Exercise 6)
