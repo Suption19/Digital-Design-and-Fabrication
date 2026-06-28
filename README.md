@@ -525,3 +525,96 @@ To complete the "Introduction to CAD" learning path in Onshape, a free, cloud-ba
 
 #### Onshape Training Dashboard - All 3 Courses Completed
 <img src="images/exercise_07/Screenshot 2026-06-23 202955.png" width="700" alt="Onshape My Training Dashboard showing the three required courses (Introduction to Parametric Feature-Based CAD, Introduction to Sketching, Introduction to Part Studios) under the Completed tab, with 3 out of 3 marked as completed">
+
+### Reflection
+The Onshape learning path is a really well-paced introduction to parametric CAD.
+
+### References
+*   [Digital Design & Fabrication | Exercise 7 Lab Manual]
+
+---
+
+## 9. 3D Printing: Passive Phone Amplifier Stand (Exercise 8)
+
+### Goal
+To design and 3D model a practical smartphone accessory from scratch in Onshape, then import it into QIDI Studio, orient it correctly, slice it for the QIDI Q2 printer, and prepare it for printing. The theme was smartphone accessories (e.g. a phone stand or a passive speaker horn); the design had to fit on the QIDI Q2 bed (270 × 270 × 256 mm) and use no more than 120 g of filament. Black PLA was the default material.
+
+### Process & Materials
+*   **Materials Used:** Onshape (parametric CAD, browser-based), QIDI Studio (slicer), QIDI Q2 3D printer, black PLA filament, USB cable.
+*   **Process:**
+
+    1. **What did I decide to model, and why?**
+       I decided to model a passive phone amplifier stand. It solves a real, everyday problem: phone speakers are tiny and sound thin. A passive amplifier uses the hollow volume in front of the speaker as an acoustic horn to amplify the sound without any electronics or power, so it works with any phone, in any orientation, while still charging. I also wanted the stand to act as a phone rest on the desk, so I combined both ideas: a slanted backrest for the phone and a hollow base with a wide front slot that doubles as the speaker opening. The cutout in the back wall serves as a charging cable passthrough, so the phone can play music and charge at the same time.
+
+    2. **Is this your first time using parametric CAD?**
+       Yes. Exercise 7 (the Onshape learning path) was my very first contact with parametric feature-based CAD, so this exercise is my first end-to-end "idea → CAD → slice" workflow. The tutorials from Exercise 7 covered sketches, dimensions, extrudes, fillets and the Part Studio feature tree, which is exactly the toolkit needed here.
+
+    3. **How did I find the tutorials? Were there any challenges?**
+       The Onshape tutorials are clear and well-paced, but I had to revisit the tutorials a couple of times before the part started looking the way I had imagined. Another problem was the "Sketches that are not fully constrained" which I solved watch some short youtube videos that explained that.
+
+    4. **How difficult was it to turn my idea into a 3D model?**
+       Moderately difficult but very rewarding. I broke the model into four clear, additive steps in Onshape:
+       1. **Sketch 1 + Extrude 1:** a simple solid rectangular block with a shallow rectangular pocket sketched and extruded out of the top surface, this defines the base and the recess where the phone will sit.
+       2. **Sketch 2 + Extrude 2:** a slanted, flat rectangular block extruded upward from the top pocket to serve as the backrest for the smartphone. The slanted angle was important for ergonomics: leaning the phone back ~15° means the screen is at a comfortable viewing angle when the stand is on a desk.
+       3. **Sketch 3 + Fillet:** a curved fillet applied to the back of the slanted rest, blending it cleanly into the main base block. The fillet is small in size, but it does two important things: it makes the transition look much cleaner aesthetically, and it removes a sharp 90° internal corner that would otherwise be a stress concentration (and a likely crack point) once printed in PLA.
+       4. **Sketch 4 + Extrude (cut):** the final features are the wide horizontal slot on the lower front face (the passive amplifier opening) and the rectangular cutout in the back wall (the cable passthrough). I extruded these as cut operations through the existing body.
+
+    5. **Which slicer settings did I apply, and in what orientation did I slice my model?**
+       I imported the finished Onshape part into QIDI Studio and placed it standing upright in its natural position on the virtual build plate, as shown in the slicer preview. The default QIDI Q2 profile for 0.4 mm nozzle / 0.2 mm layer height with black PLA worked out of the box; I left infill, walls and speed on the defaults and let QIDI Studio generate automatic tree supports inside the wide front amplifier slot to prevent the overhang from collapsing mid-print.
+
+       The estimated slicing metrics (see screenshot) were:
+       
+       | Metric | Value |
+       |---|---|
+       | Model filament | 26.73 m / 79.73 g |
+       | Support filament | 0.82 m / 2.45 g |
+       | Total filament | 27.55 m / **82.18 g** |
+       | Prepare time | 42 s |
+       | Model printing time | 1 h 34 m |
+       | Total time | **1 h 34 m** |
+       
+       This comfortably meets the **< 120 g** filament limit and the printer-bed size constraint.
+
+### Visual Documentation
+
+#### Design Idea and Reference
+<img src="images/exercise_08/Design_Idea.png" width="700" alt="Reference collage of the inspiration: a passive phone amplifier stand with a slanted rest, hollowed base for amplified sound, and rear cable passthrough, shown from front, rear, side and top-down views">
+
+#### Onshape Modelling Steps
+
+##### Step 1 - Base Block with Phone Pocket
+<img src="images/exercise_08/(1).png" width="600" alt="Onshape: a simple solid rectangular block with a shallow rectangular pocket sketched and extruded out of the top surface">
+
+##### Step 2 - Slanted Backrest Extruded
+<img src="images/exercise_08/(2).png" width="600" alt="Onshape: a slanted flat rectangular block extruded upward from the top pocket to serve as the smartphone backrest">
+
+##### Step 3 - Fillet on the Backrest Transition
+<img src="images/exercise_08/(3).png" width="600" alt="Onshape: a smooth curved fillet applied to the back of the slanted rest, blending it cleanly into the main base block">
+
+#### Final CAD Model
+
+##### Front View (Amplifier Slot)
+<img src="images/exercise_08/Final vorne.png" width="600" alt="Final Onshape model from the front: recessed area for the phone to sit in, slanted backrest, and a wide horizontal slot on the lower front face that acts as the passive amplifier opening">
+
+##### Rear View (Cable Passthrough)
+<img src="images/exercise_08/Final hinten.png" width="600" alt="Final Onshape model from the back: a rectangular cutout in the middle of the back wall that connects to the internal cavity for the charging cable to pass through">
+
+#### Slicing
+
+##### Slicer Preview with Supports
+<img src="images/exercise_08/Slicer.png" width="600" alt="QIDI Studio slicer preview showing the model standing upright on the build plate, with G-code preview active and automatically generated supports inside the front amplifier slot">
+
+##### Slicing Result / Material Usage
+<img src="images/exercise_08/slicer data.png" width="500" alt="QIDI Studio slicing result: 26.73 m / 79.73 g model filament, 0.82 m / 2.45 g support filament, 82.18 g total filament, 1h 34m total print time">
+
+### The 'Failure Log'
+*   **What went wrong:** On my first try, I sketched the cutout for the amplifier slot on the wrong face of the body (the side face instead of the front face), so when I extruded the cut, the slot appeared on the side and the front stayed solid. The cutout for the cable passthrough also had the wrong dimensions at first, so the USB-C connector did not actually fit through the hole.
+*   **How I managed it:** I used "Edit Feature" to go back into a previous Sketch, re-selected the correct planar face using Onshape's "Use face" option, and redrew the slot. For the cable passthrough I checked the actual dimensions of a USB-C cable.
+*   **What I learned:** In Onshape, the face you start a new sketch on defines the orientation of the resulting feature. Picking the wrong face does not throw an error; it just creates a feature in a place you did not expect.
+
+### Reflection
+Once I committed to that idea in Onshape, every subsequent edit was a small, local change to a specific feature in the timeline, rather than redoing the whole part. The slicer side was surprisingly low-touch: the default QIDI Q2 PLA profile gave a clean 1 h 34 m print at 82.18 g, well under the 120 g budget. I am happy with the final design and will use it on my desk to watch recipe videos while cooking, hands-free and with noticeably louder audio than the phone's built-in speaker.
+
+### References
+*   [Digital Design & Fabrication | Exercise 8 Lab Manual]
+*   [Onshape Learning Center](https://learn.onshape.com/)
